@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import {decodeToken} from "@/app/api/decode/util.ts";
 import {decryptToken} from "@/app/api/decode/util_jwe.ts";
+import { getKeyById } from '../keys/[keyId]/util';
 
 const schema = z.object({
     token: z.string().min(1),
@@ -65,6 +66,7 @@ export async function POST(request: NextRequest) {
                 header: decoded.header,
                 payload: decoded.payload,
                 signatureValid: decoded.signatureCheck.verified,
+                usedKey: getKeyById(decoded.header.kid)
             },
             { status: 200 }
         );
