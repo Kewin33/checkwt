@@ -11,7 +11,10 @@ export async function GET(
     const key = getKeyById(keyId);
 
     if (!key) {
-        return new NextResponse(null, { status: 404 });
+        return NextResponse.json(
+            { error: "Key not found" },
+            { status: 404 }
+        );
     }
 
     return NextResponse.json({ key });
