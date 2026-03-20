@@ -1,26 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
+const schema = z.object({
+    token: z.string().min(1),
+});
 
 export async function POST(request: NextRequest) {
 
-    let body;
+    let json;
 
     try {
-        body = await request.json();
+        json = await request.json();
     } catch {
         return new NextResponse(null, { status: 400 });
     }
 
-    if (!body?.token) {
+    const result = schema.safeParse(json);
+
+    if (!result.success) {
         return new NextResponse(null, { status: 400 });
     }
 
-    const token = body.token;
+    const { token } = result.data;
 
     return NextResponse.json(
         {
             header: {
                 test: "yes",
-                token: token
+                token
             },
             payload: {
                 test: "yes"
