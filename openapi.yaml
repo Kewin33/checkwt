@@ -12,7 +12,7 @@ paths:
     post:
       summary: Decode JWT
       tags:
-        - Decode
+        - Tokens
       requestBody:
         required: true
         content:
@@ -30,6 +30,28 @@ paths:
           description: Bad request - token not readable
         404:
           description: Encryption key not found
+  /keys/{keyId}:
+    get:
+      summary: Get signing key
+      tags:
+        - Tokens
+      parameters:
+        - name: keyId
+          in: path
+          required: true
+          description: The ID of the signing key
+          schema:
+            type: string
+            example: "019cfbfe-a43e-7c8d-b238-ffc538a933cc"
+      responses:
+        200:
+          description: Key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyResponse'
+        404:
+          description: Signing key not found
 
 components:
   schemas:
@@ -46,6 +68,8 @@ components:
       type: object
       required:
         - header
+        - payload
+        - signatureValid
       properties:
         header:
           type: object
@@ -53,3 +77,10 @@ components:
           type: object
         signatureValid:
           type: boolean
+    KeyResponse:
+      type: object
+      required:
+        - key
+      properties:
+        key:
+          type: object
