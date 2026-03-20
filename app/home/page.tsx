@@ -92,6 +92,11 @@ export default function Home() {
                         </div>
                     </div>
                     <JwtTextarea onChange={(token) => setToken(token)} errorMessage={errorMessage} value={value} onValueChange={(val: string) => setValue(val)}/>
+                    <div className={(signatureValid === true ? "text-green-500" : "text-red-500") + " flex flex-row items-center gap-2"}>
+                        {signatureValid === true ? <img className="w-4 h-4 inline" src="/correct.png" alt="Valid" /> : <img className="w-4 h-4 inline" src="/wrong.png" alt="Invalid" />}
+                        {signatureValid === true ? "Signature is valid" : "Signature is invalid"}
+                    </div>
+
                 </div>
                 </div>
 
