@@ -1,12 +1,13 @@
 {
   "keys": [
     {
-      "use": "sig",
-      "kty": "OKP",
-      "kid": "019cfbfe-a43e-7c8d-b238-ffc538a933cc",
       "crv": "Ed25519",
+      "d": "2i-PeDHZFuKkmBqXNcWJiBLtA-vC4EaSJyGIQsS4gNw",
+      "x": "R2IFb0tnFAOaWY_uCB874ViON90MWZo-eM18g9hpHdM",
+      "kty": "OKP",
+      "kid": "encode-test-key",
       "alg": "EdDSA",
-      "x": "AK4HRIdZ8C2_vDs-h88p-LJWcX7L0MkGeiNaQKGFtw4"
+      "use": "sig"
     }
   ]
 }

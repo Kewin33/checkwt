@@ -24,6 +24,14 @@
       "kid": "ec1",
       "alg": "ES256",
       "use": "sig"
+    },
+    {
+      "crv": "Ed25519",
+      "x": "R2IFb0tnFAOaWY_uCB874ViON90MWZo-eM18g9hpHdM",
+      "kty": "OKP",
+      "kid": "encode-test-key",
+      "alg": "EdDSA",
+      "use": "sig"
     }
   ]
 }
