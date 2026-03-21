@@ -142,6 +142,14 @@ export default function EncoderForm() {
                             className="bg-gray-50 dark:bg-[#1e1e1e] rounded-lg border border-gray-300 dark:border-[#1e1e1e] min-h-48 p-4 w-full font-mono resize-none"
                             value={payload}
                             onChange={(e) => setPayload(e.target.value)}
+                            onBlur={() => {
+                                try {
+                                    const parsed = JSON.parse(payload);
+                                    setPayload(JSON.stringify(parsed, null, 2));
+                                } catch (e) {
+                                    // Invalid JSON, don't format
+                                }
+                            }}
                             spellCheck={false}
                             aria-label="Editable Payload JSON"
                         />
