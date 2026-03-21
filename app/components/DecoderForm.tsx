@@ -120,49 +120,50 @@ export default function DecoderForm() {
                         description={`Tells you what type of token and how it's signed (like the method used to protect it).`}
                         showDescription={header !== ""}
                         formContentText={header}
+
                     >
                         <div
                             className="overflow-x-clip dark:bg-[#17181b] rounded-lg border border-gray-300 dark:border-[#1e1e1e] min-h-48 p-4">
                             <PrettyPrint data={header} />
                         </div>
                     </TextAreaWrapper>
-                </div>
 
-                <div className="col-start-2">
+                    <div className="col-start-2">
 
-                    <TextAreaWrapper
-                        title="Decoded Payload"
-                        deleteEnabled={false}
-                        description={`Contains the actual data (for example, user ID or permissions).`}
-                        showDescription={payload !== ""}
-                        formContentText={payload}
-                    >
-                        <div
-                            className="overflow-x-clip dark:bg-[#17181b] rounded-lg border border-gray-300 dark:border-[#1e1e1e] min-h-48 p-4">
-                            <PrettyPrint data={(() => {
-                                try {
-                                    return JSON.parse(payload);
-                                } catch {
-                                    return payload;
-                                }
-                            })()} />
-                        </div>
-                    </TextAreaWrapper>
-                </div>
+                        <TextAreaWrapper
+                            title="Decoded Payload"
+                            deleteEnabled={false}
+                            description={`Contains the actual data (for example, user ID or permissions).`}
+                            showDescription={payload !== ""}
+                            formContentText={payload}
+                        >
+                            <div
+                                className="overflow-x-clip dark:bg-[#17181b] rounded-lg border border-gray-300 dark:border-[#1e1e1e] min-h-48 p-4">
+                                <PrettyPrint data={(() => {
+                                    try {
+                                        return JSON.parse(payload);
+                                    } catch {
+                                        return payload;
+                                    }
+                                })()} />
+                            </div>
+                        </TextAreaWrapper>
+                    </div>
 
-                <div className="col-start-2 mb-20">
-                    <TextAreaWrapper
-                        title="Used Keys"
-                        deleteEnabled={false}
-                        description={`A secret or private key is used to create a signature so you can verify the token hasn't been tampered with.`}
-                        showDescription={usedKey !== ""}
-                        formContentText={usedKey}
-                    >
-                        <div
-                            className="overflow-x-clip dark:bg-[#17181b] rounded-lg border border-gray-300 dark:border-[#1e1e1e] min-h-48 p-4">
-                            <PrettyPrint data={usedKey} />
-                        </div>
-                    </TextAreaWrapper>
+                    <div className="col-start-2 mb-20">
+                        <TextAreaWrapper
+                            title="Used Keys"
+                            deleteEnabled={false}
+                            description={`A secret or private key is used to create a signature so you can verify the token hasn't been tampered with.`}
+                            showDescription={usedKey !== ""}
+                            formContentText={usedKey}
+                        >
+                            <div
+                                className="overflow-x-clip dark:bg-[#17181b] rounded-lg border border-gray-300 dark:border-[#1e1e1e] min-h-48 p-4">
+                                <PrettyPrint data={usedKey} />
+                            </div>
+                        </TextAreaWrapper>
+                    </div>
                 </div>
             </div>
         </>

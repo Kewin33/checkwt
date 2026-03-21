@@ -142,7 +142,7 @@ export default function IframePanel({
             {isDecodeOpen ? (
               <iframe
                 ref={decodeRef}
-                src="/home"
+                src="/decode"
                 title="Decode tool"
                 onLoad={() => {
                   if (pendingDecodeTextRef.current !== null) {

@@ -1,6 +1,16 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
       <div className="max-w-5xl mx-auto p-10 space-y-8">
+            <div className="flex gap-3">
+                <Link
+                    href="/home"
+                    className="inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
+                >
+                    Zu Home
+                </Link>
+            </div>
             <div className="font-bold text-4xl">Was ist JWT (JSON Web Token)?</div>
           Ein Standard (RFC 7519) für kompakte, URL-sichere Tokens
           <div className="mt-2 text-sm flex gap-2 items-center bg-yellow-500/10 px-4 py-2 border border-yellow-300 rounded-lg w-full">

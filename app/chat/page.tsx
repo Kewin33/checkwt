@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import Link from 'next/link';
 import { FormEvent, type MouseEvent as ReactMouseEvent, useEffect, useRef, useState } from 'react';
 import * as Ably from 'ably';
 import { ChatClient, type ChatMessageEvent, type Message, type Room } from '@ably/chat';
@@ -157,6 +158,7 @@ export default function ChatPage() {
   const [isOnlineCollapsed, setIsOnlineCollapsed] = useState(false);
   const [iframeWidth, setIframeWidth] = useState(480);
   const [isCompactLayout, setIsCompactLayout] = useState(false);
+  const [historyReloadTick, setHistoryReloadTick] = useState(0);
 
   const lobbyRoomRef = useRef<Room | null>(null);
   const chatRoomRef = useRef<Room | null>(null);
@@ -183,7 +185,7 @@ export default function ChatPage() {
     }
   };
 
-  const markRoomHistoryCleared = (roomName: string) => {
+  const setRoomHistoryCleared = (roomName: string, cleared: boolean) => {
     if (typeof window === 'undefined') {
       return;
     }
@@ -191,7 +193,11 @@ export default function ChatPage() {
     try {
       const raw = window.localStorage.getItem(CLEARED_ROOMS_STORAGE_KEY);
       const parsed = raw ? (JSON.parse(raw) as Record<string, boolean>) : {};
-      parsed[roomName] = true;
+      if (cleared) {
+        parsed[roomName] = true;
+      } else {
+        delete parsed[roomName];
+      }
       window.localStorage.setItem(CLEARED_ROOMS_STORAGE_KEY, JSON.stringify(parsed));
     } catch {
       // Ignore storage issues.
@@ -505,7 +511,7 @@ export default function ChatPage() {
         void room.detach();
       }
     };
-  }, [chatClientInstance, clientId, activePeerId]);
+  }, [chatClientInstance, clientId, activePeerId, historyReloadTick]);
 
   useEffect(() => {
     if (!listRef.current) {
@@ -644,26 +650,53 @@ export default function ChatPage() {
   };
 
   const handleClearHistory = () => {
-    const confirmed = typeof window !== 'undefined' ? window.confirm('Verlauf wirklich löschen?') : true;
-    if (!confirmed) return;
     const roomName = activePeerId ? directRoomName(clientId, activePeerId) : DEFAULT_ROOM;
-    markRoomHistoryCleared(roomName);
-    setMessages([]);
+    const currentlyCleared = isRoomHistoryCleared(roomName);
+
+    if (!currentlyCleared) {
+      const confirmed = typeof window !== 'undefined' ? window.confirm('History ausblenden (clear) aktivieren?') : true;
+      if (!confirmed) return;
+      setRoomHistoryCleared(roomName, true);
+      setMessages([]);
+      return;
+    }
+
+    setRoomHistoryCleared(roomName, false);
+    setHistoryReloadTick((prev) => prev + 1);
   };
 
   const chatBodyColumns = isCompactLayout
     ? undefined
     : `${isOnlineCollapsed ? 54 : 220}px minmax(360px, 1fr) 10px ${iframeWidth}px`;
 
+  const currentRoomName = activePeerId ? directRoomName(clientId, activePeerId) : DEFAULT_ROOM;
+  const isCurrentRoomHistoryCleared = isRoomHistoryCleared(currentRoomName);
+
   return (
     <main className={spaceGrotesk.className}>
-      <button type="button" className="clear-history absolute top-0 left-0" onClick={handleClearHistory}>
-        D
-      </button>
-      <section className="chat-shell">
+      <div className="chat-page-wrap">
+        <div className="chat-top-actions">
+          <button
+            type="button"
+            className="clear-history"
+            onClick={handleClearHistory}
+            title={isCurrentRoomHistoryCleared ? 'History anzeigen (Clear aus)' : 'History ausblenden (Clear an)'}
+          >
+            {isCurrentRoomHistoryCleared ? 'Clear: ON' : 'Clear: OFF'}
+          </button>
+          <Link href="/home" className="top-home-link">
+            Zur Home
+          </Link>
+        </div>
+        <section className="chat-shell">
         <header className="chat-head">
-          <h1>JWTF Chat</h1>
-          <p>{activePeerId ? `1:1 mit ${resolveDisplayName(activePeerId)}` : `Room: ${DEFAULT_ROOM}`}</p>
+          <div className="flex w-full items-start justify-between gap-3">
+            <div>
+              <h1>JWTF Chat</h1>
+              <p>{activePeerId ? `1:1 mit ${resolveDisplayName(activePeerId)}` : `Room: ${DEFAULT_ROOM}`}</p>
+            </div>
+            <p className="jwe-note ">Diese Chat-Ansicht ist eine praktische Anwendung von JWE: <br/>Nachrichten werden verschlüsselt übertragen :)</p>
+          </div>
           <span className="badge">{status}</span>
           {activePeerId ? (
             <button
@@ -822,7 +855,8 @@ export default function ChatPage() {
           />
           <IframePanel decodeRef={decodeIframeRef} encodeRef={encodeIframeRef} />
         </div>
-      </section>
+        </section>
+      </div>
 
       <style jsx>{`
         main {
@@ -836,8 +870,37 @@ export default function ChatPage() {
           place-items: center;
         }
 
-        .chat-shell {
+        .chat-page-wrap {
           width: min(1200px, 100%);
+          display: grid;
+          gap: 0.6rem;
+        }
+
+        .chat-top-actions {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 0.6rem;
+        }
+
+        .top-home-link {
+          border: 1px solid rgba(15, 23, 42, 0.2);
+          border-radius: 10px;
+          background: rgba(255, 255, 255, 0.85);
+          color: #0f172a;
+          font: inherit;
+          font-size: 0.88rem;
+          font-weight: 600;
+          padding: 0.4rem 0.8rem;
+          text-decoration: none;
+        }
+
+        .top-home-link:hover {
+          background: rgba(255, 255, 255, 1);
+        }
+
+        .chat-shell {
+          width: 100%;
           height: min(82vh, 900px);
           background: rgba(255, 255, 255, 0.9);
           border: 1px solid rgba(24, 24, 27, 0.08);
@@ -867,6 +930,13 @@ export default function ChatPage() {
           margin: 0;
           color: #cbd5e1;
           font-size: 0.9rem;
+        }
+
+        .jwe-note {
+          color: #bfdbfe;
+          font-size: 0.82rem;
+          line-height: 1.35;
+          max-width: 72ch;
         }
 
         .badge {
@@ -899,16 +969,18 @@ export default function ChatPage() {
         }
 
         .clear-history {
-          justify-self: start;
-          margin-top: 0.35rem;
-          border: 1px solid rgba(255, 255, 255, 0.2);
+          border: 1px solid rgba(15, 23, 42, 0.2);
           border-radius: 999px;
-          background: rgba(255, 255, 255, 0.04);
-          color: #f8fafc;
+          background: rgba(255, 255, 255, 0.85);
+          color: #0f172a;
           font: inherit;
-          font-size: 0.78rem;
-          padding: 0.3rem 0.65rem;
+          font-size: 0.82rem;
+          padding: 0.35rem 0.7rem;
           cursor: pointer;
+        }
+
+        .clear-history:hover {
+          background: rgba(255, 255, 255, 1);
         }
 
         .chat-body {
