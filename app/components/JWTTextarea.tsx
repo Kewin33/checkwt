@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, forwardRef, ForwardedRef } from "react";
 import highlightJwt from "./HighlightJWT";
 
 type JwtTextareaProps = {
@@ -9,9 +9,11 @@ type JwtTextareaProps = {
     showSegmentTooltips?: boolean;
 };
 
-export default function JwtTextarea({ onChange, errorMessage, value, onValueChange, showSegmentTooltips = false }: JwtTextareaProps) {
+export default forwardRef(function JwtTextarea(
+    { onChange, errorMessage, value, onValueChange, showSegmentTooltips = false }: JwtTextareaProps,
+    ref: ForwardedRef<HTMLTextAreaElement>
+) {
     const highlightRef = useRef<HTMLPreElement | null>(null);
-    const textareaRef = useRef<HTMLTextAreaElement | null>(null);
     const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number } | null>(null);
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -43,7 +45,7 @@ export default function JwtTextarea({ onChange, errorMessage, value, onValueChan
                 </pre>
 
                 <textarea
-                    ref={textareaRef}
+                    ref={ref} // Hier weiterreichen
                     id="jwt"
                     value={value ? value : ""}
                     onChange={handleChange}
@@ -75,4 +77,4 @@ export default function JwtTextarea({ onChange, errorMessage, value, onValueChan
             `}</style>
         </div>
     );
-}
+});
