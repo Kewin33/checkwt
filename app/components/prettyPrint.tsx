@@ -35,7 +35,7 @@ export default function PrettyPrint({ data }: { data: any }) {
                 } else if (/null/.test(match)) {
                     cls = 'null';
                 }
-                return `<span class="${cls}">${match}</span>`;
+                return `<span class="${cls}"><span class="${(cls === 'key' ? ' underline decoration-dashed decoration-2' : '')}">${(cls === 'key' ? match.slice(0, -1) : match)}</span>${(cls === 'key' ? ':' : '')}</span>`;
             });
 
             // Replace newlines with <br>
