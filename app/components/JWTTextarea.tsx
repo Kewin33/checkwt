@@ -49,13 +49,13 @@ export default function JwtTextarea({ onChange, errorMessage, value, onValueChan
                     onScroll={handleScroll}
                     spellCheck={false}
                     placeholder="Paste JWT here"
-                    className={(errorMessage ? "border-red-500 " : "") +"jwt-input absolute inset-0 z-10 overflow-auto bg-transparent leading-6 text-transparent caret-black outline-none placeholder:text-gray-400 font-mono border border-gray-300 dark:border-[#1e1e1e] outline-blue-100 w-full resize-none rounded-lg p-4"}
+                    className={(errorMessage ? "border-red-500 " : "") +"jwt-input absolute inset-0 z-10 overflow-auto bg-transparent leading-6 text-transparent caret-black outline-none placeholder:text-gray-400 font-mono border border-gray-300 dark:border-[#1e1e1e] dark:bg-[#17181b] outline-blue-100 w-full resize-none rounded-lg p-4"}
                     style={{ minHeight: 673 }}
                 />
 
                 {tooltip && showSegmentTooltips && (
                     <div
-                        className="pointer-events-none fixed z-50 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#101826] px-2 py-1 text-xs text-gray-900 dark:text-gray-100 shadow-lg"
+                        className="pointer-events-none fixed z-50 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-[bg-[#17181b]] px-2 py-1 text-xs text-gray-900 dark:text-gray-100 shadow-lg"
                         style={{ left: tooltip.x + 12, top: tooltip.y + 12 }}
                     >
                         {tooltip.text}
