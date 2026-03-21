@@ -110,7 +110,7 @@ export default function DecoderForm() {
                             errorMessage={errorMessage}
                             value={value}
                             onValueChange={(val: string) => setValue(val)}
-                            showSegmentTooltips={signatureValid === true}
+                            showSegmentTooltips={signatureValid === undefined || signatureValid === true}
                         />
                     </TextAreaWrapper>
                 </div>
