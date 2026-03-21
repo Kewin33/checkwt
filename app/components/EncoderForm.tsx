@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import JwtTextarea from "./JWTTextarea";
+import highlightJwt from "./HighlightJWT";
 
 const JWT_ALGS = ["EdDSA", "RS256", "RS384", "RS512", "PS256", "PS384", "PS512", "ES256", "ES384", "ES512"] as const;
 const JWE_ALGS = ["RSA-OAEP", "RSA-OAEP-256", "RSA-OAEP-384", "RSA-OAEP-512", "ECDH-ES", "ECDH-ES+A128KW", "ECDH-ES+A192KW", "ECDH-ES+A256KW"] as const;

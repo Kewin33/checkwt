@@ -86,7 +86,7 @@ export default function DecoderForm() {
                     <TextAreaWrapper
                         title="JSON Web Token"
                         messages={[
-                            ...(errorMessage ? [{type: "error" as const, message: errorMessage}] : []),
+                            ...(errorMessage ? [{ type: "error" as const, message: errorMessage }] : []),
                             ...(tokenType !== 'JWE' && signatureValid === true ? [{
                                 type: "success" as const,
                                 message: `Signature is valid`,
@@ -97,7 +97,7 @@ export default function DecoderForm() {
                                 message: `Signature is invalid`,
                                 icon: `/wrong.png`
                             }] : []),
-                            ...(tokenType ? [{type: "info" as const, message: `Detected: ${tokenType}`}] : []),
+                            ...(tokenType ? [{ type: "info" as const, message: `Detected: ${tokenType}` }] : []),
                         ]}
                     >
                         <JwtTextarea
@@ -119,7 +119,7 @@ export default function DecoderForm() {
                     >
                         <div
                             className="overflow-x-clip bg-gray-50 dark:bg-[#17181b] rounded-lg border border-gray-300 dark:border-[#1e1e1e] min-h-48 p-4">
-                            <PrettyPrint data={header}/>
+                            <PrettyPrint data={header} />
                         </div>
                     </TextAreaWrapper>
                 </div>
@@ -133,7 +133,13 @@ export default function DecoderForm() {
                     >
                         <div
                             className="overflow-x-clip bg-gray-50 dark:bg-[#17181b] rounded-lg border border-gray-300 dark:border-[#1e1e1e] min-h-48 p-4">
-                            <PrettyPrint data={payload}/>
+                            <PrettyPrint data={(() => {
+                                try {
+                                    return JSON.parse(payload);
+                                } catch {
+                                    return payload;
+                                }
+                            })()} />
                         </div>
                     </TextAreaWrapper>
                 </div>
@@ -146,7 +152,7 @@ export default function DecoderForm() {
                     >
                         <div
                             className="overflow-x-clip bg-gray-50 dark:bg-[#17181b] rounded-lg border border-gray-300 dark:border-[#1e1e1e] min-h-48 p-4">
-                            <PrettyPrint data={usedKey}/>
+                            <PrettyPrint data={usedKey} />
                         </div>
                     </TextAreaWrapper>
                 </div>
