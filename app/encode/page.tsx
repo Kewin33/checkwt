@@ -168,7 +168,7 @@ export default function Encode() {
                         />
                     </div>
 
-                    <Button onClick={doEncodeCall} className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                    <Button onClick={doEncodeCall} className="w-full rounded-full cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4">
                         {mode === "jwe" ? "Encode JWE" : "Encode JWT"}
                     </Button>
                 </div>
