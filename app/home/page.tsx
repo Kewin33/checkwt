@@ -81,7 +81,8 @@ export default function Home() {
     }, [token])
 
     return (
-        <div className="w-full h-screen p-4 md:p-10 space-y-6 m-6">
+        <>
+        <div className="w-full h-screen p-4 md:p-10 space-y-6">
             <div className="flex items-center justify-between gap-3">
                 <ThemeSwitcher/>
                 <Link
@@ -172,5 +173,6 @@ export default function Home() {
                 </div>
             </div>
         </div>
+        </>
     );
 }
