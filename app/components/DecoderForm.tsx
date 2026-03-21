@@ -1,6 +1,6 @@
 import PrettyPrint from "./prettyPrint";
 import JwtTextarea from "./JWTTextarea";
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import TextAreaWrapper from "@/app/components/TextAreaWrapper.tsx";
 
 export default function DecoderForm() {
@@ -14,7 +14,7 @@ export default function DecoderForm() {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [value, setValue] = useState<string>("");
 
-
+    const jwtRef = useRef<HTMLTextAreaElement>(null);
 
     const clearState = () => {
         setErrorMessage(null);
@@ -95,10 +95,14 @@ export default function DecoderForm() {
                             clearState();
                             setToken("");
                             setValue("");
+                            if (jwtRef.current) {
+                                jwtRef.current.focus();
+                            }
                         }}
                         formContentText={token}
                     >
                         <JwtTextarea
+                            ref={jwtRef}
                             onChange={(token) => setToken(token)}
                             errorMessage={errorMessage}
                             value={value}
