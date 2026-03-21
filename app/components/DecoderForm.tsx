@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import PrettyPrint from "./prettyPrint";
 import JwtTextarea from "./JWTTextarea";
 import { useEffect, useState } from "react";
