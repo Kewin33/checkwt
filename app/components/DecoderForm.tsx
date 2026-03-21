@@ -99,6 +99,10 @@ export default function DecoderForm() {
                             }] : []),
                             ...(tokenType ? [{ type: "info" as const, message: `Detected: ${tokenType}` }] : []),
                         ]}
+                        onClear={() => {
+                            clearState();
+                            setValue("");
+                        }}
                     >
                         <JwtTextarea
                             onChange={(token) => setToken(token)}
