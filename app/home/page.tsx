@@ -24,7 +24,7 @@ export default function Home() {
                 <img src="/favicon.ico" alt="favicon.ico"  className="w-10 rounded-xl"/>
                 <h1 className="font-bold text-4xl text-center">CheckWTF - Finally understand JWT and JWE's</h1>
             </div>
-            <div className="text-sm text-center mx-auto">
+            <div className="text-sm mx-auto">
 <span className="text-gray-500">                Decode, verify, and generate JSON Web Tokens, which are an open, industry standard <a href="https://datatracker.ietf.org/doc/html/rfc7519" target="_blank" className="underline">RFC-7519</a> method for representing claims securely between two parties.
 </span>
                         <TabsBar
